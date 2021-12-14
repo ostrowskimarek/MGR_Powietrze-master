@@ -1,6 +1,11 @@
 import json
 import requests
 import urllib
+import numpy as np
+import pandas as pd
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+pd.options.mode.chained_assignment = None
 
 #Sensory
 
@@ -31,8 +36,17 @@ with open('sensory.json') as jsonFile:
 
 key = jsonObject['key']
 values = jsonObject['values']
-
+'''
 print("Cząstka: " + key)
 for i in data['values']:
         print("Data:", i['date'])
         print("Value:", i['value'])
+'''
+
+with open('sensory.json') as jsonFile:
+    jsonObject = json.load(jsonFile)
+    df = pd.json_normalize(jsonObject['values'])
+
+    sensors = pd.DataFrame(df.groupby(['value'])['date'].sum().sort_values(ascending=False))
+
+
