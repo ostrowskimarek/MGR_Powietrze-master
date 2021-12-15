@@ -39,6 +39,7 @@ with open('sensory.json') as jsonFile:
 
 key = jsonObject['key']
 values = jsonObject['values']
+
 '''
 print("Cząstka: " + key)
 for i in data['values']:
@@ -49,10 +50,16 @@ for i in data['values']:
 with open('sensory.json') as jsonFile:
     jsonObject = json.load(jsonFile)
     df = pd.json_normalize(jsonObject['values'])
+   # value_reformat = df['value'].round(decimals=2)
 
-    sensors = pd.DataFrame(df.groupby(['value'])['date'].sum().sort_values(ascending=False))
-    print(sensors)
+    sensors = pd.DataFrame(df.groupby(df['value'])['date'].sum().sort_values(ascending=False))
+    o = sensors.iloc
+    o = (len(values) -1)
 
+    sensors_freq = df['value'] / o
+    sensors_reformat = sensors_freq.round(decimals=2)
+    df['Freq'] = sensors_reformat
 
+    print(df)
 
-
+    
